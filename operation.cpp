@@ -14,9 +14,21 @@ void insertAndSort(List &L, infotype x) {
     */
 
     //-------------your code here-------------
-    your code here
+    if (findElm(L, x) == nullptr) {
+        address P = allocate(x);
 
-
+        if(L.first == nullptr || x.id < L.first -> info.id) {
+            insertFirst(L,P);
+        }else{
+            address Prec = L.first;
+            while (Prec -> next != nullptr && Prec -> next -> info.id < x.id) {
+                Prec = Prec -> next;
+            }
+            insertAfter(L, Prec, P);
+        }
+    }else{
+        cout << "ID sudah ada! Data ditolak." << endl;
+    }
     //----------------------------------------
 }
 
@@ -29,9 +41,27 @@ void deletebyID(List &L, int id_x) {
 
     address Prec, P;
     //-------------your code here-------------
-    your code here
-
-
+    if (L.first != nullptr) {
+        if (L.first->info.id == id_x) {
+            deleteFirst(L, P);
+            deallocate(P);
+            cout << "Data berhasil dihapus." << endl;
+        }else{
+            Prec = L.first;
+            while (Prec->next != NULL && Prec->next->info.id != id_x) {
+                Prec = Prec->next;
+            }
+            if (Prec->next != NULL) {
+                deleteAfter(L, Prec, P);
+                deallocate(P);
+                cout << "Data berhasil dihapus." << endl;
+            } else {
+                cout << "Data dengan ID tersebut tidak ditemukan!" << endl;
+            }
+         }
+    } else {
+        cout << "List kosong!" << endl;
+    }
     //----------------------------------------
 }
 
@@ -43,8 +73,24 @@ void savePassedMember(List &L, List &L2){
     */
     address P;
     //-------------your code here-------------
-    your code here
-
-
+    address Prec = nullptr;
+    P = L.first;
+    
+    while (P != nullptr) {
+        if (P->info.score > 80) {
+            if (P == L.first) {
+                deleteFirst(L, P);
+                insertLast(L2, P);
+                P = L.first;
+            }else{
+                deleteAfter(L, Prec, P);
+                insertLast(L2, P);
+                P = Prec->next;
+            }
+        }else{
+            Prec = P;
+            P = P -> next;
+        }
+    }
     //----------------------------------------
 }
